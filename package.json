@@ -22,5 +22,8 @@
     "modding",
     "framework"
   ],
-  "documentationUrl": "https://github.com/RolandKaechele/AchievementManager#readme"
+  "documentationUrl": "https://github.com/RolandKaechele/AchievementManager#readme",
+  "scripts": {
+    "postinstall": "node postinstall.js"
+  }
 }

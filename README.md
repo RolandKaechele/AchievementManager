@@ -36,9 +36,14 @@ Tracks Trigger and Progress achievement types with PlayerPrefs persistence, JSON
 git clone https://github.com/RolandKaechele/AchievementManager.git Assets/AchievementManager
 ```
 
-### Option C — Manual copy
+### Option C — npm / postinstall
 
-Copy the `AchievementManager/` folder into your project's `Assets/` directory.
+```bash
+cd Assets/AchievementManager
+npm install
+```
+
+`postinstall.js` creates the required `StreamingAssets/` folder under `Assets/` and optionally copies example JSON files.
 
 
 ## Scene Setup
