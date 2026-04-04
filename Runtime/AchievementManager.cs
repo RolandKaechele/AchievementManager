@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+#if ODIN_INSPECTOR
+using Sirenix.OdinInspector;
+#endif
 
 namespace AchievementManager.Runtime
 {
@@ -95,7 +98,11 @@ namespace AchievementManager.Runtime
     /// </summary>
     [AddComponentMenu("AchievementManager/Achievement Manager")]
     [DisallowMultipleComponent]
+#if ODIN_INSPECTOR
+    public class AchievementManager : SerializedMonoBehaviour
+#else
     public class AchievementManager : MonoBehaviour
+#endif
     {
         // -------------------------------------------------------------------------
         // Inspector
