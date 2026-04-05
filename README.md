@@ -16,6 +16,7 @@ Tracks Trigger and Progress achievement types with PlayerPrefs persistence, JSON
 - **GalleryManager integration** — calls `GalleryManager.UnlockStatic(id)` on achievement unlock (activated via `ACHIEVEMENTMANAGER_GM`)
 - **EventManager integration** — fires `AchievementUnlocked` as a named GameEvent (activated via `ACHIEVEMENTMANAGER_EM`)
 - **Custom Inspector** — live unlock / progress display, per-achievement Unlock / Reset buttons, progress bars, Reset All
+- **DOTween Pro integration** — `DOAnchorPos`/`DOFade` slide-in unlock notification toast; `Image.DOFillAmount` animates progress bar fills in real time (activated via `ACHIEVEMENTMANAGER_DOTWEEN`)
 - **Odin Inspector integration** — `SerializedMonoBehaviour` base for full Inspector serialization of complex types; runtime-display fields marked `[ReadOnly]` in Play Mode (activated via `ODIN_INSPECTOR`)
 
 
