@@ -1,22 +1,22 @@
 {
-  "achievements": [
-    {
-      "id": "first_chapter_complete",
-      "title": "Der erste Schritt",
-      "description": "Schließe das erste Kapitel ab.",
-      "points": 10,
-      "type": 0,
-      "progressTarget": 1,
-      "hidden": false
-    },
-    {
-      "id": "defeat_100_enemies",
-      "title": "Unaufhaltsam",
-      "description": "Besiege 100 Feinde.",
-      "points": 25,
-      "type": 1,
-      "progressTarget": 100,
-      "hidden": false
-    }
-  ]
+    "achievements":  [
+                         {
+                             "id":  "first_chapter_complete",
+                             "title":  "Der erste Schritt",
+                             "description":  "Schließe das erste Kapitel ab.",
+                             "points":  10,
+                             "type":  0,
+                             "progressTarget":  1,
+                             "hidden":  false
+                         },
+                         {
+                             "id":  "defeat_100_enemies",
+                             "title":  "Unaufhaltsam",
+                             "description":  "Besiege 100 Feinde.",
+                             "points":  25,
+                             "type":  1,
+                             "progressTarget":  100,
+                             "hidden":  false
+                         }
+                     ]
 }
