@@ -1,0 +1,14 @@
+﻿{
+    "achievements":  [
+                         {
+                             "id":  "first_chapter_complete",
+                             "title":  "Der erste Schritt",
+                             "description":  "SchlieÃŸe das erste Kapitel ab.",
+                             "points":  10,
+                             "type":  0,
+                             "progressTarget":  1,
+                             "hidden":  false,
+                             "chapter":  1
+                         }
+                     ]
+}

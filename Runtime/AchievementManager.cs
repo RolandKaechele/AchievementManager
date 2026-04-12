@@ -56,6 +56,9 @@ namespace AchievementManager.Runtime
 
         [Tooltip("If true, this achievement is not shown in the UI until it is unlocked.")]
         public bool hidden;
+
+        [Tooltip("Chapter number this achievement belongs to (0 = global / not chapter-specific).")]
+        public int chapter;
     }
 
     // -------------------------------------------------------------------------

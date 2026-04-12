@@ -118,28 +118,22 @@ Debug.Log($"Unlocked {am.GetUnlocked().Count} / {am.Achievements.Count}  ({am.To
 
 Enable `loadFromJson` and place one or more `.json` files in `StreamingAssets/achievements/`.
 All `*.json` files in the folder are loaded and merged by `id` at startup.
+Each file contains exactly one achievement entry and is named by achievement ID.
+The `chapter` field scopes an achievement to a specific chapter (`1`–`46`); use `0` (or omit) for global achievements.
 
-**Example:** `StreamingAssets/achievements/chapter_01.json`
+**Example:** `StreamingAssets/achievements/chapter_01_complete.json`
 
 ```json
 {
   "achievements": [
     {
-      "id": "first_chapter_complete",
-      "title": "Der erste Schritt",
+      "id": "chapter_01_complete",
+      "title": "Erste Schritte",
       "description": "Schließe das erste Kapitel ab.",
+      "chapter": 1,
       "points": 10,
       "type": 0,
       "progressTarget": 1,
-      "hidden": false
-    },
-    {
-      "id": "defeat_100_enemies",
-      "title": "Unaufhaltsam",
-      "description": "Besiege 100 Feinde.",
-      "points": 25,
-      "type": 1,
-      "progressTarget": 100,
       "hidden": false
     }
   ]
@@ -213,9 +207,9 @@ Open via **JSON Editors → Achievement Manager** in the Unity menu bar, or via 
 
 | Action | Result |
 | ------ | ------ |
-| **Load** | Reads `StreamingAssets/achievements.json`; creates the file if missing |
+| **Load** | Reads all `*.json` from `StreamingAssets/achievements/`; creates the folder if missing |
 | **Edit** | Add / remove / reorder entries using the Inspector list |
-| **Save** | Writes back to `StreamingAssets/achievements.json` and calls `AssetDatabase.Refresh()` |
+| **Save** | Writes each entry as `<id>.json` to `StreamingAssets/achievements/`; entries without an `id` are skipped. Calls `AssetDatabase.Refresh()` |
 
 With **ODIN_INSPECTOR** active, the list uses Odin's enhanced drawer (drag-to-sort, collapsible entries).
 

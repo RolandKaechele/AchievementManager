@@ -18,8 +18,7 @@ namespace AchievementManager.Editor
     /// </summary>
     public class AchievementJsonEditorWindow : EditorWindow
     {
-        private const string JsonFolderName   = "achievements";
-        private const string JsonSaveFileName = "achievements.json";
+        private const string JsonFolderName = "achievements";
 
         private AchievementEditorBridge  _bridge;
         private UnityEditor.Editor       _bridgeEditor;
@@ -93,7 +92,6 @@ namespace AchievementManager.Editor
                 else
                 {
                     Directory.CreateDirectory(folderPath);
-                    File.WriteAllText(Path.Combine(folderPath, JsonSaveFileName), JsonUtility.ToJson(new AchievementsEditorWrapper(), true));
                     AssetDatabase.Refresh();
                 }
                 _bridge.achievements = list;
@@ -110,11 +108,16 @@ namespace AchievementManager.Editor
             {
                 string folderPath = Path.Combine(Application.streamingAssetsPath, JsonFolderName);
                 if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
-                var w = new AchievementsEditorWrapper { achievements = _bridge.achievements.ToArray() };
-                var path = Path.Combine(folderPath, JsonSaveFileName);
-                File.WriteAllText(path, JsonUtility.ToJson(w, true));
+                int saved = 0;
+                foreach (var entry in _bridge.achievements)
+                {
+                    if (string.IsNullOrEmpty(entry.id)) continue;
+                    var w = new AchievementsEditorWrapper { achievements = new[] { entry } };
+                    File.WriteAllText(Path.Combine(folderPath, $"{entry.id}.json"), JsonUtility.ToJson(w, true));
+                    saved++;
+                }
                 AssetDatabase.Refresh();
-                _status = $"Saved {_bridge.achievements.Count} achievements to {JsonFolderName}/{JsonSaveFileName}.";
+                _status = $"Saved {saved} achievement file(s) to {JsonFolderName}/";
                 _statusError = false;
             }
             catch (Exception e) { _status = $"Save error: {e.Message}"; _statusError = true; }
