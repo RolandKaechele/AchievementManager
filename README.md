@@ -9,7 +9,7 @@ Tracks Trigger and Progress achievement types with PlayerPrefs persistence, JSON
 - **Two achievement types** — `Trigger` (single-call unlock) and `Progress` (unlock when accumulated count reaches a target)
 - **Definitions** — id, title, description, icon, points, type, progressTarget, hidden flag; define in Inspector
 - **PlayerPrefs persistence** — unlock state and progress survive app restarts without a save file
-- **JSON / Modding** — load and merge achievement definitions from `StreamingAssets/achievements.json`; mods can add new achievements or override existing ones
+- **JSON / Modding** — load and merge achievement definitions from `StreamingAssets/achievements/`; mods can add new achievements or override existing ones
 - **Progress bar** — `AddProgress(id, amount)` accumulates progress and auto-unlocks at `progressTarget`
 - **Total points** — `TotalPoints` property sums all currently unlocked achievement points
 - **SaveManager integration** — sets `ach_<id>` save flags on unlock for cross-system checks (activated via `ACHIEVEMENTMANAGER_SM`)
@@ -63,7 +63,7 @@ npm install
 | ----- | ------- | ----------- |
 | `achievements` | *(empty)* | All achievement definitions |
 | `loadFromJson` | `false` | Merge from JSON on Awake |
-| `jsonPath` | `"achievements.json"` | Path relative to `StreamingAssets/` |
+| `jsonPath` | `"achievements/"` | Folder relative to `StreamingAssets/` containing `.json` files to merge. Falls back to single-file mode if the value points to an existing file. |
 
 ### 2. Trigger achievements
 
@@ -116,7 +116,10 @@ Debug.Log($"Unlocked {am.GetUnlocked().Count} / {am.Achievements.Count}  ({am.To
 
 ## JSON / Modding
 
-Enable `loadFromJson` and place `achievements.json` in `StreamingAssets/`.
+Enable `loadFromJson` and place one or more `.json` files in `StreamingAssets/achievements/`.
+All `*.json` files in the folder are loaded and merged by `id` at startup.
+
+**Example:** `StreamingAssets/achievements/chapter_01.json`
 
 ```json
 {

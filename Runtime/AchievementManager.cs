@@ -116,8 +116,8 @@ namespace AchievementManager.Runtime
         [Tooltip("When enabled, merge achievement definitions from a JSON file in StreamingAssets/ at startup.")]
         [SerializeField] private bool loadFromJson = false;
 
-        [Tooltip("Path relative to StreamingAssets/ (e.g. 'achievements.json').")]
-        [SerializeField] private string jsonPath = "achievements.json";
+        [Tooltip("Path relative to StreamingAssets/ (e.g. 'achievements/' or 'achievements.json').")]
+        [SerializeField] private string jsonPath = "achievements/";
 
         // -------------------------------------------------------------------------
         // Events
@@ -182,12 +182,24 @@ namespace AchievementManager.Runtime
 
         private void LoadJson()
         {
-            string path = Path.Combine(Application.streamingAssetsPath, jsonPath);
-            if (!File.Exists(path))
+            string fullPath = Path.Combine(Application.streamingAssetsPath, jsonPath);
+            if (Directory.Exists(fullPath))
             {
-                Debug.LogWarning($"[AchievementManager] JSON not found: {path}");
-                return;
+                foreach (var file in Directory.GetFiles(fullPath, "*.json", SearchOption.TopDirectoryOnly))
+                    MergeAchievementsFromFile(file);
             }
+            else if (File.Exists(fullPath))
+            {
+                MergeAchievementsFromFile(fullPath);
+            }
+            else
+            {
+                Debug.LogWarning($"[AchievementManager] JSON not found: {fullPath}");
+            }
+        }
+
+        private void MergeAchievementsFromFile(string path)
+        {
             try
             {
                 var wrapper = JsonUtility.FromJson<AchievementsJson>(File.ReadAllText(path));
@@ -207,7 +219,7 @@ namespace AchievementManager.Runtime
                         _index[a.id] = a;
                     }
                 }
-                Debug.Log($"[AchievementManager] Achievements merged from {path}.");
+                Debug.Log($"[AchievementManager] Merged from {path}.");
             }
             catch (Exception ex)
             {

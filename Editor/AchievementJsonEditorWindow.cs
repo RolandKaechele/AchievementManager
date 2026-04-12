@@ -18,7 +18,8 @@ namespace AchievementManager.Editor
     /// </summary>
     public class AchievementJsonEditorWindow : EditorWindow
     {
-        private const string JsonFileName = "achievements.json";
+        private const string JsonFolderName   = "achievements";
+        private const string JsonSaveFileName = "achievements.json";
 
         private AchievementEditorBridge  _bridge;
         private UnityEditor.Editor       _bridgeEditor;
@@ -67,7 +68,7 @@ namespace AchievementManager.Editor
         {
             EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
             EditorGUILayout.LabelField(
-                Path.Combine("StreamingAssets", JsonFileName),
+                $"StreamingAssets/{JsonFolderName}/",
                 EditorStyles.miniLabel);
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Load", EditorStyles.toolbarButton, GUILayout.Width(50))) Load();
@@ -77,47 +78,46 @@ namespace AchievementManager.Editor
 
         private void Load()
         {
-            var path = Path.Combine(Application.streamingAssetsPath, JsonFileName);
+            string folderPath = Path.Combine(Application.streamingAssetsPath, JsonFolderName);
             try
             {
-                if (!File.Exists(path))
+                var list = new List<AchievementDefinition>();
+                if (Directory.Exists(folderPath))
                 {
-                    File.WriteAllText(path, JsonUtility.ToJson(new AchievementsEditorWrapper(), true));
+                    foreach (var file in Directory.GetFiles(folderPath, "*.json", SearchOption.TopDirectoryOnly))
+                    {
+                        var w = JsonUtility.FromJson<AchievementsEditorWrapper>(File.ReadAllText(file));
+                        if (w?.achievements != null) list.AddRange(w.achievements);
+                    }
+                }
+                else
+                {
+                    Directory.CreateDirectory(folderPath);
+                    File.WriteAllText(Path.Combine(folderPath, JsonSaveFileName), JsonUtility.ToJson(new AchievementsEditorWrapper(), true));
                     AssetDatabase.Refresh();
                 }
-
-                var w = JsonUtility.FromJson<AchievementsEditorWrapper>(File.ReadAllText(path));
-                _bridge.achievements = new List<AchievementDefinition>(
-                    w.achievements ?? Array.Empty<AchievementDefinition>());
-
+                _bridge.achievements = list;
                 if (_bridgeEditor != null) { DestroyImmediate(_bridgeEditor); _bridgeEditor = null; }
-
-                _status     = $"Loaded {_bridge.achievements.Count} achievements.";
+                _status = $"Loaded {list.Count} achievements from {JsonFolderName}/.";
                 _statusError = false;
             }
-            catch (Exception e)
-            {
-                _status     = $"Load error: {e.Message}";
-                _statusError = true;
-            }
+            catch (Exception e) { _status = $"Load error: {e.Message}"; _statusError = true; }
         }
 
         private void Save()
         {
             try
             {
-                var w    = new AchievementsEditorWrapper { achievements = _bridge.achievements.ToArray() };
-                var path = Path.Combine(Application.streamingAssetsPath, JsonFileName);
+                string folderPath = Path.Combine(Application.streamingAssetsPath, JsonFolderName);
+                if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
+                var w = new AchievementsEditorWrapper { achievements = _bridge.achievements.ToArray() };
+                var path = Path.Combine(folderPath, JsonSaveFileName);
                 File.WriteAllText(path, JsonUtility.ToJson(w, true));
                 AssetDatabase.Refresh();
-                _status     = $"Saved {_bridge.achievements.Count} achievements to {JsonFileName}.";
+                _status = $"Saved {_bridge.achievements.Count} achievements to {JsonFolderName}/{JsonSaveFileName}.";
                 _statusError = false;
             }
-            catch (Exception e)
-            {
-                _status     = $"Save error: {e.Message}";
-                _statusError = true;
-            }
+            catch (Exception e) { _status = $"Save error: {e.Message}"; _statusError = true; }
         }
     }
 
