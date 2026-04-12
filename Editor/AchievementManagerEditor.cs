@@ -16,6 +16,9 @@ namespace AchievementManager.Editor
         {
             DrawDefaultInspector();
 
+            EditorGUILayout.Space(4);
+            if (GUILayout.Button("Open JSON Editor")) AchievementJsonEditorWindow.ShowWindow();
+
             EditorGUILayout.Space(6);
 
             // ── Validation ──────────────────────────────────────────────────────
