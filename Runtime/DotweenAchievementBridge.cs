@@ -1,6 +1,6 @@
 #if ACHIEVEMENTMANAGER_DOTWEEN
 using UnityEngine;
-using UnityEngine.UI;
+
 using DG.Tweening;
 
 namespace AchievementManager.Runtime

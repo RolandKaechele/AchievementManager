@@ -1,8 +1,9 @@
-﻿{
+{
     "name": "AchievementManager.Editor",
     "rootNamespace": "AchievementManager.Editor",
     "references": [
-        "AchievementManager.Runtime"
+        "AchievementManager.Runtime",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [
         "Editor"
